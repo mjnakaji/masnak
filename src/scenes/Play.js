@@ -33,7 +33,7 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0);
 
-        
+
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -49,7 +49,7 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: 'F3B141',
+            backgroundColor: '#F3B141',
             color: '#843605',
             align: 'right',
             padding: {
@@ -68,13 +68,27 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+        let timeConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5, bottom: 5
+            },
+            fixedWidth: 100
+        }
+        this.ticks = game.settings.gameTimer;
+        this.timeRight = this.add.text(borderUISize + borderPadding * 40, borderUISize + borderPadding * 2, this.ticks / 1000, timeConfig);
     }
 
     update() {
+        this.ticks --;
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
-        if(this.gameOver && Phaser.input.Keyboard.JustDown(keyLEFT)) {
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
         }
         this.starfield.tilePositionX -= 4;
