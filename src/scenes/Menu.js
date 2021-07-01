@@ -9,6 +9,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+
+        // This onward is audio from my source
         this.load.audio('sfx_miss', './assets/DragonQuestMiss.wav');
         this.load.audio('sfx_manscream', './assets/man_scream.wav');
         this.load.audio('sfx_chin', './assets/chin.wav');
@@ -19,7 +21,7 @@ class Menu extends Phaser.Scene {
         this.sound.play('sfx_Menu');
         // this.add.text(20, 20, "Rocket Patrol Menu");
         // this.scene.start("playScene");
-        game.settings = {
+        game.settings = { // for the color change in the menu
             invert: false
         }
         
@@ -29,8 +31,10 @@ class Menu extends Phaser.Scene {
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyI = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I);
         keyO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O);
+        // I looked up some Phaser keycodes to assign the correct values
     }
     update() {
+        // I added the text in the update() so that inverting colors would be possible
         if(game.settings.invert) {
             let menuConfig = {
                 fontFamily: 'Courier',
@@ -110,6 +114,7 @@ class Menu extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + (borderUISize + borderPadding) * 5, 'Press O to revert to original',
             menuConfig).setOrigin(0.5);
         }
+        // keys I, O to assign to invert/original
         if(Phaser.Input.Keyboard.JustDown(keyI)) {
             game.settings = {
                 invert: true
@@ -140,7 +145,7 @@ class Menu extends Phaser.Scene {
             this.sound.play('sfx_select');
             this.scene.start('playScene');
         }
-
+        // account for more options for 2p mode
         if(Phaser.Input.Keyboard.JustDown(keyA)) {
             game.settings = {
                 spaceshipSpeed: 3,

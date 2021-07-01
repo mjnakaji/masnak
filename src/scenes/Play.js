@@ -31,7 +31,7 @@ class Play extends Phaser.Scene {
             game.config.width / 2,
             game.config.height - (borderUISize + borderPadding),
             'rocket').setOrigin(0.5, 0);
-        if(game.settings.multi) {
+        if(game.settings.multi) { // multiplayer enabled, added new class Rocket2 because they have different controls
             this.p2Rocket = new Rocket2(this,
                 game.config.width / 2,
                 game.config.height - (borderUISize + borderPadding),
@@ -42,6 +42,7 @@ class Play extends Phaser.Scene {
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0);
 
+        keyM = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -50,6 +51,7 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        // I looked up some Phaser keycodes to assign the correct values
 
         this.anims.create({
             key: 'explode',
@@ -74,10 +76,11 @@ class Play extends Phaser.Scene {
 
 
         // clock: 60 seconds
+        // ignore this, I did not implement a timer
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or (M) for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
         this.sound.play('sfx_bass');
@@ -97,6 +100,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        // also ignore this too, I did not implement a timer here as well
         //this.timer += delta_lag;
         //while(this.timer > 1000) {
         //    this.resources += 1;
@@ -105,20 +109,22 @@ class Play extends Phaser.Scene {
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.start("playScene");
         }
-        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyM)) {
             this.scene.start("menuScene");
         }
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
             this.p1Rocket.update();
-            if(game.settings.multi) {
+            if(game.settings.multi) { // multiplayer option
                 this.p2Rocket.update();
             }
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
         }
-        if(game.settings.beam && Phaser.Input.Keyboard.JustDown(keySPACE)) { // beam that demolishes everything on screen
+
+        // beam that demolishes everything on screen
+        if(game.settings.beam && Phaser.Input.Keyboard.JustDown(keySPACE)) {
             this.shipExplode(this.ship01);
             this.shipExplode(this.ship02);
             this.shipExplode(this.ship03);

@@ -10,6 +10,7 @@ class Rocket2 extends Phaser.GameObjects.Sprite {
         this.sfxMiss = scene.sound.add('sfx_chin');  // add miss sfx
     }
     
+    // nearly a replication of the class Rocket, just the difference of key assignments
     preload() {
         this.load.audio('sfx_miss', './assets/DragonQuestMiss.wav');
     }
