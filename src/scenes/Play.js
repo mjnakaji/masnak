@@ -28,16 +28,24 @@ class Play extends Phaser.Scene {
             game.config.width / 2,
             game.config.height - (borderUISize + borderPadding),
             'rocket').setOrigin(0.5, 0);
+        if(game.settings.multi) {
+            this.p2Rocket = new Rocket2(this,
+                game.config.width / 2,
+                game.config.height - (borderUISize + borderPadding),
+                'rocket').setOrigin(0.5, 0);
+        }
         // add spaceships
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 30).setOrigin(0,0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10).setOrigin(0,0);
 
-
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
 
         this.anims.create({
             key: 'explode',
@@ -79,12 +87,17 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.ticks = game.settings.gameTimer;
-        this.timeRight = this.add.text(borderUISize + borderPadding * 40, borderUISize + borderPadding * 2, this.ticks / 1000, timeConfig);
+        this.timer = game.settings.gameTimer;
+        this.timeRight = this.add.text(borderUISize + borderPadding * 40, borderUISize + borderPadding * 2, this.timer, timeConfig);
     }
 
     update() {
-        this.ticks --;
+        //this.timer += delta_lag;
+        //while(this.timer > 1000) {
+        //    this.resources += 1;
+        //    this.timer -= 1000;
+        //}
+        this.timer -= 1000;
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -94,6 +107,9 @@ class Play extends Phaser.Scene {
         this.starfield.tilePositionX -= 4;
         if(!this.gameOver) {
             this.p1Rocket.update();
+            if(game.settings.multi) {
+                this.p2Rocket.update();
+            }
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
@@ -117,6 +133,26 @@ class Play extends Phaser.Scene {
             this.shipExplode(this.ship01);
             // this.ship01.reset();
             // console.log("kaboom ship 01");
+        }
+        if(game.settings.multi) {
+            if(this.checkCollision(this.p2Rocket, this.ship03)) {
+                this.p2Rocket.reset();
+                this.shipExplode(this.ship03);
+                // this.ship03.reset();
+                // console.log("kaboom ship 03");
+            }
+            if(this.checkCollision(this.p2Rocket, this.ship02)) {
+                this.p2Rocket.reset();
+                this.shipExplode(this.ship02);
+                // this.ship02.reset();
+                // console.log("kaboom ship 02");
+            }
+            if(this.checkCollision(this.p2Rocket, this.ship01)) {
+                this.p2Rocket.reset();
+                this.shipExplode(this.ship01);
+                // this.ship01.reset();
+                // console.log("kaboom ship 01");
+            }
         }
     }
 
