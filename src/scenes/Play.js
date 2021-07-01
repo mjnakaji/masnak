@@ -11,6 +11,9 @@ class Play extends Phaser.Scene {
     }
 
     create() {
+        game.settings.beam = true;
+        this.gameOver = false;
+
         this.add.text(20, 20, "Rocket Patrol Play");
 
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0,0);
@@ -46,6 +49,7 @@ class Play extends Phaser.Scene {
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.anims.create({
             key: 'explode',
@@ -67,7 +71,7 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding * 2, this.p1Score, scoreConfig);
 
-        this.gameOver = false;
+
 
         // clock: 60 seconds
         scoreConfig.fixedWidth = 0;
@@ -76,6 +80,7 @@ class Play extends Phaser.Scene {
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or <- for Menu', scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
+        this.sound.play('sfx_bass');
         let timeConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -97,9 +102,8 @@ class Play extends Phaser.Scene {
         //    this.resources += 1;
         //    this.timer -= 1000;
         //}
-        this.timer -= 1000;
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.scene.restart();
+            this.scene.start("playScene");
         }
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
@@ -113,6 +117,12 @@ class Play extends Phaser.Scene {
             this.ship01.update();
             this.ship02.update();
             this.ship03.update();
+        }
+        if(game.settings.beam && Phaser.Input.Keyboard.JustDown(keySPACE)) { // beam that demolishes everything on screen
+            this.shipExplode(this.ship01);
+            this.shipExplode(this.ship02);
+            this.shipExplode(this.ship03);
+            game.settings.beam = false;
         }
 
         // check collisions
@@ -171,6 +181,7 @@ class Play extends Phaser.Scene {
         let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0,0);
         boom.anims.play('explode');
         this.sound.play('sfx_explosion');
+        this.sound.play('sfx_manscream');
         boom.on('animationcomplete', () => {
             ship.reset();
             ship.alpha = 1;

@@ -9,8 +9,14 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_select', './assets/blip_select12.wav');
         this.load.audio('sfx_explosion', './assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        this.load.audio('sfx_miss', './assets/DragonQuestMiss.wav');
+        this.load.audio('sfx_manscream', './assets/man_scream.wav');
+        this.load.audio('sfx_chin', './assets/chin.wav');
+        this.load.audio('sfx_Menu', './assets/Night_Theme.wav');
+        this.load.audio('sfx_bass', './assets/bassdrum.wav');
     }
     create() {
+        this.sound.play('sfx_Menu');
         // this.add.text(20, 20, "Rocket Patrol Menu");
         // this.scene.start("playScene");
         game.settings = {
@@ -37,11 +43,13 @@ class Menu extends Phaser.Scene {
                 },
                 fixedWidth: 0
             }
-            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 2, 'ROCKET PATROL',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 2.5, 'ROCKET PATROL',
             menuConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding), 'P1 Use <- -> to move & ^ to fire',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 1.5, 'P1 Use <- -> to move & ^ to fire',
             menuConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 4, 'P2 Use A D to move & W to fire',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 0.5, 'P2 Use A D to move & W to fire',
+            menuConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 4 + (borderUISize + borderPadding) * 0.5, 'Push SPACE to demolish ALL enemies',
             menuConfig).setOrigin(0.5);
 
             menuConfig.backgroundColor = "#FF00FF";
@@ -74,11 +82,13 @@ class Menu extends Phaser.Scene {
                 },
                 fixedWidth: 0
             }
-            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 2, 'ROCKET PATROL',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 2.5, 'ROCKET PATROL',
             menuConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding), 'P1 Use <- -> to move & ^ to fire',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 1.5, 'P1 Use <- -> to move & ^ to fire',
             menuConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 4, 'P2 Use A D to move & W to fire',
+            this.add.text(game.config.width / 2, game.config.height / 4 - (borderUISize + borderPadding) * 0.5, 'P2 Use A D to move & W to fire',
+            menuConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 4 + (borderUISize + borderPadding) * 0.5, 'Push SPACE to demolish ALL enemies',
             menuConfig).setOrigin(0.5);
 
             menuConfig.backgroundColor = "#00FF00";
